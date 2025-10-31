@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+* {
+    font-family: "Lora", serif;
+}
+
+
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  /* overflow: hidden; */
+}
+
+.navbar .active {
+  color: crimson;
+  font-weight: bold;
+  border: 1px solid #CAC8C8FF;
+  border-radius: 20px;
+  background: rgb(243, 226, 226);
+}
