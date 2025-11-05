@@ -20,7 +20,10 @@ const Register = () => {
     createUser(email, password)
       .then((result) => {
         console.log(result.user);
-        updateUserProfile(displayName, photoURL);
+
+        addUserTodb({...result.user, displayName, photoURL})
+
+        updateUserProfile(displayName, photoURL)
         toast.success("User created successfully!", { id: "create-user" });
       })
       .catch((error) => {
@@ -34,17 +37,41 @@ const Register = () => {
     signInWithGoogle()
       .then((result) => {
         toast.success("User created successfully!", { id: "create-user" });
-        console.log(result.user);
+        addUserTodb(result.user);
         navigate("/");
       })
       .catch((error) => {
         console.log(error);
-        toast.error(error.message, { id: "create-user" });
+        toast.error(error.message || error.error, { id: "create-user" });
       });
   };
 
+  const addUserTodb = async (user) => {
+    const userData = {
+      uid: user.uid,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      email: user.email,
+    }
+    try {
+      const res = await fetch("https://m10-cs.vercel.app/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await res.json();
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
+    <div className="card bg-base-100 border border-gray-200 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
       <div className="card-body">
         <h1 className="text-3xl font-bold text-center">Register</h1>
         <form onSubmit={handleRegister}>

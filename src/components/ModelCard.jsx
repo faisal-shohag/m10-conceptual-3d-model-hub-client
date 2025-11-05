@@ -1,9 +1,9 @@
 import { Link } from "react-router";
 
 export const ModelCard = ({model}) => {
-    const {name, thumbnail, category, description, _id} = model
+    const {name, thumbnail, category, description, _id, created_by, downloads} = model
   return (
-    <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+    <div className="card bg-base-100 dark:bg-zinc-900 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       <figure className="h-48 overflow-hidden">
         <img
           src={thumbnail}
@@ -13,7 +13,13 @@ export const ModelCard = ({model}) => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{name}</h2>
-        <div className="badge text-xs badge-xs badge-secondary rounded-full">{category}</div>
+      <div className="gap-2 flex items-center">
+            <div className="badge text-xs badge-xs badge-secondary rounded-full">{category}</div>
+          <div className="badge badge-outline text-xs badge-xs badge-secondary rounded-full">Downloded: {downloads}</div>
+      </div>
+
+        <div className="text-xs text-pink-500">Added By: <b>{created_by}</b></div>
+
         <p className="line-clamp-1">
             {description}
         </p>

@@ -2,14 +2,28 @@ import { Link, NavLink } from "react-router";
 import { IoLogoModelS } from "react-icons/io";
 import { GoHomeFill } from "react-icons/go";
 import { IoLogIn, IoLogOut } from "react-icons/io5";
-import { FaGear, FaUser } from "react-icons/fa6";
+import { FaGear, FaThemeisle, FaUser } from "react-icons/fa6";
 import { LuRotate3D } from "react-icons/lu";
 import { ImBoxAdd } from "react-icons/im";
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { HiOutlineDownload } from "react-icons/hi";
 
 const NavBar = () => {
   const { user, signOutUser } = use(AuthContext);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  useEffect(() => {
+    const html = document.querySelector("html");
+    html.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const handleTheme = (checked) => {
+    setTheme(checked ? "dark" : "light");
+  };
+
+
   return (
     <div className="navbar py-0 min-h-0 z-1 shadow-sm rounded-full glass-card max-w-7xl">
       <div className="navbar-start">
@@ -67,15 +81,11 @@ const NavBar = () => {
           </li>
           <li>
             <NavLink to={"/add-model"}>
-             <ImBoxAdd /> Add model
+              <ImBoxAdd /> Add model
             </NavLink>
           </li>
 
-          <li>
-            <NavLink to={"/profile"}>
-              <FaUser /> Profile
-            </NavLink>
-          </li>
+       
         </ul>
       </div>
       <div className="navbar-end gap-3">
@@ -89,7 +99,11 @@ const NavBar = () => {
               <div className="w-9 border-2 border-gray-300 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  referrerPolicy="no-referrer"
+                  src={
+                    user.photoURL ||
+                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                  }
                 />
               </div>
             </div>
@@ -109,9 +123,25 @@ const NavBar = () => {
               <li>
                 <a>
                   {" "}
-                  <FaGear /> Settings
+                  <FaThemeisle />{" "}
+                  <input
+                    onChange={(e) => handleTheme(e.target.checked)}
+                    type="checkbox"
+                    defaultChecked={localStorage.getItem('theme') === "dark"}
+                    className="toggle"
+                  />
                 </a>
               </li>
+                 <li>
+            <NavLink to={"/my-models"}>
+              <FaUser /> My Models
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to={"/my-downloads"}>
+              <HiOutlineDownload /> My Downloads
+            </NavLink>
+          </li>
               <li>
                 <button
                   onClick={signOutUser}

@@ -1,6 +1,9 @@
+import { use } from "react";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../context/AuthContext";
 
 const AddModal = () => {
+  const { user } = use(AuthContext)
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = {
@@ -8,13 +11,16 @@ const AddModal = () => {
       category: e.target.category.value,
       description: e.target.description.value,
       thumbnail: e.target.thumbnail.value,
+      created_by: user.email,
+      downloads: 0
     };
 
     try {
-      const res = await fetch("http://localhost:3000/models", {
+      const res = await fetch("https://m10-cs.vercel.app/models", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: user.accessToken,
         },
         body: JSON.stringify(formData),
       });
@@ -27,7 +33,7 @@ const AddModal = () => {
       toast.error(error.message);
     }
 
-    // fetch("http://localhost:3000/models", {
+    // fetch("https://m10-cs.vercel.app/models", {
     //   method: "POST",
     //   headers: {
     //     "Content-Type": "application/json",
